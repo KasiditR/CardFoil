@@ -123,6 +123,27 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &320923838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d7929456f875a144999ae7a8314a391, type: 3}
+  m_PrefabInstance: {fileID: 1423509313}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &320923841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320923838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa81b4a2a1b67a47a9a89f728fbb433, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obj: {fileID: 1404587666}
+  targetRotate: {x: 360, y: 0, z: 0}
+  duration: 8
+  ease: 1
 --- !u!1 &639180033
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,11 +329,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743866859}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.13866667, y: 0.17000002, z: -0.0073999986}
+  m_LocalPosition: {x: -0.13866667, y: 0.03, z: -0.0073999986}
   m_LocalScale: {x: 1.8231385, y: 0.21733335, z: 1}
   m_Children: []
   m_Father: {fileID: 1404587666}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &743866861
 MeshRenderer:
@@ -333,7 +354,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 59239af94d1cf1241a045479578ef4cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -933,7 +954,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0bd4cb8f3194aed47bf31a3ec5642541, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0bd4cb8f3194aed47bf31a3ec5642541, type: 3}
       propertyPath: m_LocalScale.x
@@ -949,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0bd4cb8f3194aed47bf31a3ec5642541, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.28
+      value: -2.46
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0bd4cb8f3194aed47bf31a3ec5642541, type: 3}
       propertyPath: m_LocalPosition.z
