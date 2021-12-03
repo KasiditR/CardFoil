@@ -89,7 +89,8 @@ Shader "Unlit/FoilCardShader"
                 float fresnel = pow(1.0 - dotProduct,2.0);
                 float samplingVal = (sin((i.viewDir.x + i.viewDir.y) * 1.0 * UNITY_TWO_PI) * 0.5 + 0.5) * fresnel;
                 float mask = tex2D(_FoilMask, uv).x;
-                return lerp(col,tex2D(_Gradien,dotProduct)  * _FoilColor , step(_MaskThreshold,mask));
+                float sheen = step(0.1,sin((i.uv.x +i.uv.y+ _Time.y)* UNITY_PI) * 0.5 + 0.5);
+                return lerp(col,tex2D(_Gradien,dotProduct)  * _FoilColor , step(_MaskThreshold,mask) + sheen +1.0);
             }
             ENDCG
         }
