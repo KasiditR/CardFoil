@@ -23,10 +23,7 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
@@ -41,7 +38,7 @@ jobs:
         with:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: Build_${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
