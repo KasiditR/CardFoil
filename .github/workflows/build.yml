@@ -1,7 +1,7 @@
 name: Build project
 
-on: 
-    workflow_dispatch: {}
+on:
+  workflow_dispatch: {}
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -23,6 +23,9 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - uses: actions/cache@v3
         with:
           path: Library
