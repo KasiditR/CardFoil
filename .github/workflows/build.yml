@@ -53,9 +53,12 @@ jobs:
         with:
           name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
           path: build/${{ matrix.targetPlatform }}
+      - name: Create Tag
+        run: git tag -a v${{ steps.unity-project-settings-info.outputs.bundle-version }} -m "Version ${{ steps.unity-project-settings-info.outputs.bundle-version }}"
+      - name: Push Tag
+        run: git push origin v${{ steps.unity-project-settings-info.outputs.bundle-version }}
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/${{ matrix.targetPlatform }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
