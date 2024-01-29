@@ -55,15 +55,9 @@ jobs:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-
-      # Create GitHub Release
-      - name: Create Tag
-        run: git tag -a v${{ steps.unity-project-settings-info.outputs.bundle-version }} -m "Version ${{ steps.unity-project-settings-info.outputs.bundle-version }}"
-      - name: Push Tag
-        run: git push origin v${{ steps.unity-project-settings-info.outputs.bundle-version }}
-
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/${{ matrix.targetPlatform }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name : ${{ steps.unity-project-settings-info.outputs.bundle-version }}
