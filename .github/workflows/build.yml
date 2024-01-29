@@ -12,34 +12,65 @@ jobs:
       matrix:
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          - StandaloneWindows # Build a Windows standalone.
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - StandaloneLinux64 # Build a Linux 64-bit standalone.
           - iOS # Build an iOS player.
           - Android # Build an Android .apk standalone app.
           - WebGL # WebGL.
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
-      - uses: actions/cache@v4
+      - name: "Unity Project Settings Info"
+        id: unity-project-settings-info
+        uses: Breakstep-Studios/unity-project-settings-info@v1.0.0
+      - name: "Output Bundle Version"
+        run: |
+          echo bundleVersion: ${{ steps.unity-project-settings-info.outputs.bundle-version }}
+      - name: Cache Unity Library
+        uses: actions/cache@v4
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
-      - if: matrix.targetPlatform == 'Android'
+      - name: Check Free Disk Space (Android)
+        if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
-      - uses: game-ci/unity-builder@v4
+      - name: Build with Unity
+        uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
         with:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-      - uses: actions/upload-artifact@v4
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: Build_${{ matrix.targetPlatform }}
+          name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
           path: build/${{ matrix.targetPlatform }}
+  creatag:
+    name: Create tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: "Unity Project Settings Info"
+        id: unity-project-settings-info
+        uses: Breakstep-Studios/unity-project-settings-info@v1.0.0
+      - name: Create Git Tag
+        run: |
+          TAG_NAME=${{ steps.unity-project-settings-info.outputs.bundle-version }}
+          if [ -z "$(git tag -l $TAG_NAME)" ]; then
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+          else
+            echo "Tag $TAG_NAME already exists. Skipping tag creation."
+          fi
