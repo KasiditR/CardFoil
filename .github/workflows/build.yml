@@ -22,13 +22,6 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
-
-      # Add these steps to set Git user identity
-      - name: Set up Git
-        run: |
-          git config --global user.email "kasdit.ruangmunjit@gmail.com"
-          git config --global user.name "bossKasidit"
-
       - name: "Unity Project Settings Info"
         id: unity-project-settings-info
         uses: Breakstep-Studios/unity-project-settings-info@v1.0.0
