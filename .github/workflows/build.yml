@@ -55,6 +55,10 @@ jobs:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
+          path: build/${{ matrix.targetPlatform }}
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
