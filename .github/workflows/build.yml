@@ -59,6 +59,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          name: Build_${{ steps.unity-project-settings-info.outputs.bundle-version }}
           files: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.unity-project-settings-info.outputs.bundle-version }}
