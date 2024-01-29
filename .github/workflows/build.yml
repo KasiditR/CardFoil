@@ -55,13 +55,17 @@ jobs:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
+      - name: Zip build artifacts
+        run: |
+          cd build/${{ matrix.targetPlatform }}
+          zip -r ../Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip .
       - uses: actions/upload-artifact@v3
         with:
           name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
-          path: build/${{ matrix.targetPlatform }}
+          path: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/${{ matrix.targetPlatform }}/**/*
+          files: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name : ${{ steps.unity-project-settings-info.outputs.bundle-version }}
+          tag_name: ${{ steps.unity-project-settings-info.outputs.bundle-version }}
