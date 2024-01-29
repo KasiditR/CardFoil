@@ -61,7 +61,7 @@ jobs:
         if: steps.check-release.outputs.release_exists != 'true'
         run: |
           # Create release
-          release_id=$(gh release create "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -t "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -n "Release ${{ steps.unity-project-settings-info.outputs.bundle-version }}" --json id --field id)
+          release_id=$(gh release create "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -t "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -n "Release ${{ steps.unity-project-settings-info.outputs.bundle-version }}" | awk '/^ID:/{print $2}'))
       
           # Upload build files
           for file in build/${{ matrix.targetPlatform }}/*; do
