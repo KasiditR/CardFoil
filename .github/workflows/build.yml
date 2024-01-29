@@ -48,29 +48,18 @@ jobs:
           allowDirtyBuild: true
           targetPlatform: ${{ matrix.targetPlatform }}
           versioning: Semantic
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
-          path: build/${{ matrix.targetPlatform }}
-  creatag:
-    name: Create tag
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
-      - name: "Unity Project Settings Info"
-        id: unity-project-settings-info
-        uses: Breakstep-Studios/unity-project-settings-info@v1.0.0
-      - name: Create Git Tag
+      - name: Check if Release exists
+        id: check-release
         run: |
-          TAG_NAME=${{ steps.unity-project-settings-info.outputs.bundle-version }}
-          if [ -z "$(git tag -l $TAG_NAME)" ]; then
-            git tag $TAG_NAME
-            git push origin $TAG_NAME
+          if gh release view ${{ steps.unity-project-settings-info.outputs.bundle-version }} &> /dev/null; then
+            echo "::set-output name=release_exists::true"
           else
-            echo "Tag $TAG_NAME already exists. Skipping tag creation."
+            echo "::set-output name=release_exists::false"
           fi
+        shell: bash
+      - name: Create Release and Attach Build
+        if: steps.check-release.outputs.release_exists != 'true'
+        run: |
+          gh release create ${{ steps.unity-project-settings-info.outputs.bundle-version }} build/${{ matrix.targetPlatform }}/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
