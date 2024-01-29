@@ -60,6 +60,13 @@ jobs:
       - name: Create Release and Attach Build
         if: steps.check-release.outputs.release_exists != 'true'
         run: |
-          gh release create ${{ steps.unity-project-settings-info.outputs.bundle-version }} build/${{ matrix.targetPlatform }}/*
+          # Create release
+          release_id=$(gh release create "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -t "${{ steps.unity-project-settings-info.outputs.bundle-version }}" -n "Release ${{ steps.unity-project-settings-info.outputs.bundle-version }}" --json id --field id)
+      
+          # Upload build files
+          for file in build/${{ matrix.targetPlatform }}/*; do
+            gh release upload $release_id "$file" --clobber
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
