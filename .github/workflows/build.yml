@@ -57,8 +57,8 @@ jobs:
           versioning: Semantic
       - name: Zip build artifacts
         run: |
-          cd build/${{ matrix.targetPlatform }}
-          zip -r ../Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip .
+          cd $GITHUB_WORKSPACE/build/${{ matrix.targetPlatform }}
+          zip -r $GITHUB_WORKSPACE/Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}.zip .
       - uses: actions/upload-artifact@v3
         with:
           name: Build_${{ matrix.targetPlatform }}_${{ steps.unity-project-settings-info.outputs.bundle-version }}
